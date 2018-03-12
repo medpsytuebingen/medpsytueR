@@ -19,9 +19,9 @@ devtools::install_github("medpsytuebingen/medpsytueR")
 ## Functions included
 
 `load_calorimetry`: will import all files from the calorimeter, so long they all
-follow the same naming convention.
+follow the same naming convention. For example for files named "study-id-session", e.g. insuso-03-N3:
 
 ``` r
-df <- load_calorimetry(path = "myproject/data", pattern = "InsuSO-03-N2")
+df <- load_calorimetry(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)")
 ```
 
