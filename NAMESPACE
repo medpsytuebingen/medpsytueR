@@ -2,6 +2,7 @@
 
 export(load_calorimetry)
 export(load_excel)
+export(load_pvt)
 importFrom(dplyr,mutate)
 importFrom(dplyr,select)
 importFrom(dplyr,setdiff)
