@@ -1,4 +1,5 @@
 [![Travis build status](https://travis-ci.org/medpsytuebingen/medpsytueR.svg?branch=master)](https://travis-ci.org/medpsytuebingen/medpsytueR)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 # medpsytueR
 
