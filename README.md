@@ -18,6 +18,14 @@ devtools::install_github("medpsytuebingen/medpsytueR")
 
 ## Functions included
 
+`clean_cases`: this function will exclude data from subjects with any missing values
+in a specified column.
+
+``` r
+df_nomiss <- clean_cases(df, id, value)
+```
+
+
 `load_calorimetry`: will import all files from the calorimeter, so long they all
 follow the same naming convention. For example for files named "study-id-session", e.g. insuso-03-N3:
 
@@ -31,4 +39,11 @@ spreadsheet is clean before attempting to import.
 
 ``` r
 load_excel(path = "myproject/data/allmydata.xlsx", skip_sheets = c("README", "intermediate_calc"))
+```
+
+
+`load_pvt`: will import all .dat files with data from an ePrime Psychomotor Vigilance Task into a single dataframe, so long they all follow the same naming convention. For example for files named "study-id-session", e.g. insuso-03-N3:
+
+``` r
+df <- load_pvt(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)")
 ```
