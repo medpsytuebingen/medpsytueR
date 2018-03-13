@@ -1,7 +1,7 @@
 Package: medpsytueR
 Version: 0.0.0.9000
-Title: What the Package Does (one line, title case)
-Description: What the package does (one paragraph).
+Title: Common Functions Used At The Medical Psychology Tuebingen
+Description: This package is an easy to share your functions with other colleagues.
 Authors@R: person("Joao", "Santiago", , "joao.santiago@uni-tuebingen.de", c("aut", "cre"))
 License: MIT + file LICENSE
 Encoding: UTF-8
