@@ -25,3 +25,10 @@ follow the same naming convention. For example for files named "study-id-session
 df <- load_calorimetry(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)")
 ```
 
+
+`load_excel`: will import all sheets from an excel file into separate dataframes. You can specify sheets to skip with the `skip_sheets` argument. This function only works properly if all sheets are _perfectly tabular_, without any special formatting. Make sure the
+spreadsheet is clean before attempting to import.
+
+``` r
+load_excel(path = "myproject/data/allmydata.xlsx", skip_sheets = c("README", "intermediate_calc"))
+```
