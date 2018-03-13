@@ -19,10 +19,8 @@ load_calorimetry(.path = NULL,
 A dataframe.
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+This function will load all calorimeter files in the same directory,
+ into R as a dataframe.
 }
 \examples{
 \dontrun{
