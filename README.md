@@ -46,5 +46,12 @@ load_excel(path = "myproject/data/allmydata.xlsx", skip_sheets = c("README", "in
 `load_pvt`: will import all .dat files with data from an ePrime Psychomotor Vigilance Task into a single dataframe, so long they all follow the same naming convention. For example for files named "study-id-session", e.g. insuso-03-N3:
 
 ``` r
-df <- load_pvt(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)")
+df <- load_pvt(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)")
+```
+
+
+`load_rat_eeg`: will import all .txt files with data from sleep scoring with Spike2.
+
+``` r
+df <- load_rat_eeg(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)")
 ```
