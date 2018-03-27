@@ -17,7 +17,7 @@
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map_df}},\code{\link[purrr]{set_names}}
 #'  \code{\link[stringr]{str_match_all}},\code{\link[stringr]{str_subset}}
 #'  \code{\link[tidyr]{unnest}}
-#' @rdname load_pvt
+#' @rdname load_rat_eeg
 #' @export
 #' @importFrom tibble tibble
 #' @importFrom dplyr mutate select
