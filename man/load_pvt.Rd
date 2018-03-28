@@ -5,13 +5,13 @@
 \title{Load PVT reaction time task}
 \usage{
 load_pvt(.path = NULL,
-  .pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)",
+  .pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)",
   col_names = c("study_name", "id", "session"))
 }
 \arguments{
 \item{.path}{Path to files, Default: NULL}
 
-\item{.pattern}{Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)'}
+\item{.pattern}{Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)'}
 
 \item{col_names}{Names for the columns. Default: c("study_name", "id", "session")}
 }
