@@ -1,4 +1,5 @@
 [![Travis build status](https://img.shields.io/travis/medpsytuebingen/medpsytueR.svg?style=flat-square)](https://travis-ci.org/medpsytuebingen/medpsytueR)
+[![AppVeyor build status](https://img.shields.io/appveyor/ci/jcpsantiago/medpsytueR.svg?style=flat-square)](https://ci.appveyor.com/project/jcpsantiago/medpsytuer-4aalo)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg?longCache=true&style=flat-square)
 
 # medpsytueR

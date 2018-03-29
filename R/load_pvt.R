@@ -1,7 +1,7 @@
 #' @title Load PVT reaction time task
 #' @description Load all .dat files from the Psychomotor Vigilance Task (ePrime) in the same directory.
 #' @param .path Path to files, Default: NULL
-#' @param .pattern Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)'
+#' @param .pattern Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)'
 #' @param col_names Names for the columns. Default: c("study_name", "id", "session")
 #' @return A dataframe
 #' @details DETAILS
@@ -26,7 +26,7 @@
 #' @importFrom tidyr unnest
 #' @importFrom magrittr "%>%"
 load_pvt <- function(.path = NULL,
-                             .pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)",
+                             .pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)",
                              col_names = c("study_name", "id", "session")) {
 
 
