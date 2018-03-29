@@ -3,6 +3,9 @@
 #' @param .path Path to files, Default: NULL
 #' @param .pattern Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)'
 #' @param col_names Names for the columns. Default: c("study_name", "id", "session")
+#' @param drop_cols The Spike2 script will produce files with columns (e.g. T1EEG_PR)
+#' for each electrode and animal recorded. Since usually the information is the
+#' same across all electrodes Default: TRUE
 #' @return A dataframe
 #' @details DETAILS
 #' @examples
@@ -16,18 +19,20 @@
 #'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map_df}},\code{\link[purrr]{set_names}}
 #'  \code{\link[stringr]{str_match_all}},\code{\link[stringr]{str_subset}}
-#'  \code{\link[tidyr]{unnest}}
+#'  \code{\link[tidyr]{unnest}},\code{\link[tidyr]{gather}},\code{\link[tidyr]{separate}}
 #' @rdname load_rat_eeg
 #' @export
 #' @importFrom tibble tibble
 #' @importFrom dplyr mutate select
 #' @importFrom purrr map map_df set_names map_lgl
 #' @importFrom stringr str_match_all str_subset
-#' @importFrom tidyr unnest
+#' @importFrom tidyr unnest gather separate
+#' @importFrom readr read_table2
 #' @importFrom magrittr "%>%"
 load_rat_eeg <- function(.path = NULL,
                      .pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)",
-                     col_names = c("study_name", "id", "session")) {
+                     col_names = c("study_name", "id", "session"),
+                     drop_cols = TRUE) {
 
 
   df <- tibble::tibble(fpath = list.files(
@@ -47,26 +52,19 @@ load_rat_eeg <- function(.path = NULL,
                                                    set_names(col_names))),
       ## read the files
       imp_data = purrr::map(fpath,
-                            ~ purrr::map_df(., ~ read_table2(.)))) %>%
+                            ~ purrr::map_df(., ~ readr::read_table2(.)))) %>%
     tidyr::unnest(cnames) %>%
     tidyr::unnest(imp_data) %>%
     dplyr::select(-fpath) %>%
-    dplyr::select_if(., ~ !(all(is.na(.))))
+    dplyr::select_if(., ~ !(all(is.na(.)))) %>%
+    tidyr::gather(type, transition, matches("T[12]")) %>%
+    tidyr::separate(type, into = c("rec", "electrode"), sep = 2)
 
-  dT1_T2 <- purrr::map_lgl(colnames(df), ~ any(str_detect(., "T[12]")))
-
-  ## Depending on whether
-  if(sum(dT1_T2) == 6){
-
+  ## Depending on whether we want to drop the columns with rec and electrode
+  if(drop_cols){
     df <- df %>%
-      gather(type, transition, T1EEG_PL:T2EEG_PR) %>%
-      separate(type, into = c("rec", "electrode"), sep = 2)
-
-  } else if(sum(dT1_T2) == 3){
-
-    df <- df %>%
-      gather(type, transition, T1EEG_PL:T1EEG_PR) %>%
-      separate(type, into = c("rec", "electrode"), sep = 2)
-
+      dplyr::select(-c(rec, electrode))
+  } else {
+    df
   }
 }

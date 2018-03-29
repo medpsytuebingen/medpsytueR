@@ -6,7 +6,7 @@
 \usage{
 load_rat_eeg(.path = NULL,
   .pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)",
-  col_names = c("study_name", "id", "session"))
+  col_names = c("study_name", "id", "session"), drop_cols = TRUE)
 }
 \arguments{
 \item{.path}{Path to files, Default: NULL}
@@ -14,6 +14,10 @@ load_rat_eeg(.path = NULL,
 \item{.pattern}{Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)'}
 
 \item{col_names}{Names for the columns. Default: c("study_name", "id", "session")}
+
+\item{drop_cols}{The Spike2 script will produce files with columns (e.g. T1EEG_PR)
+for each electrode and animal recorded. Since usually the information is the
+same across all electrodes Default: TRUE}
 }
 \value{
 A dataframe
@@ -36,5 +40,5 @@ if(interactive()){
  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
  \code{\link[purrr]{map}},\code{\link[purrr]{map_df}},\code{\link[purrr]{set_names}}
  \code{\link[stringr]{str_match_all}},\code{\link[stringr]{str_subset}}
- \code{\link[tidyr]{unnest}}
+ \code{\link[tidyr]{unnest}},\code{\link[tidyr]{gather}},\code{\link[tidyr]{separate}}
 }
