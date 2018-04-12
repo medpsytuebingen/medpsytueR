@@ -1,13 +1,5 @@
 #' @title Load sleep rat sleep scoring (Spike2)
 #' @description Load all .txt files with sleep scoring done with Spike2.
-#' @param .path Path to files, Default: NULL
-#' @param .pattern Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)'
-#' @param col_names Names for the columns. Default: c("study_name", "id", "session")
-#' @param drop_cols The Spike2 script will produce files with columns (e.g. T1EEG_PR)
-#' for each electrode and animal recorded. Since usually the information is the
-#' same across all electrodes Default: TRUE
-#' @title Load sleep rat sleep scoring (Spike2)
-#' @description Load all .txt files with sleep scoring done with Spike2.
 #' @param path Path to files as a string, Default: NULL
 #' @param col_names Names for the columns corresponding to the information on the
 #' filename, Default: c("study", "id", "condition")
