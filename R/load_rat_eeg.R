@@ -6,8 +6,17 @@
 #' @param drop_cols The Spike2 script will produce files with columns (e.g. T1EEG_PR)
 #' for each electrode and animal recorded. Since usually the information is the
 #' same across all electrodes Default: TRUE
-#' @return A dataframe
-#' @details DETAILS
+#' @title Load sleep rat sleep scoring (Spike2)
+#' @description Load all .txt files with sleep scoring done with Spike2.
+#' @param path Path to files as a string, Default: NULL
+#' @param col_names Names for the columns corresponding to the information on the
+#' filename, Default: c("study", "id", "condition")
+#' @param drop_cols The Spike2 script will produce files with columns (e.g. T1EEG_PR)
+#' for each electrode and animal recorded. Since usually the information is the
+#' same across all electrodes Default: TRUE
+#' @param file_ext The extension of the files you want to import, Default: '.txt'
+#' @param ... PARAM_DESCRIPTION
+#' @return A data-frame
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -16,48 +25,37 @@
 #' }
 #' @seealso
 #'  \code{\link[tibble]{tibble}}
-#'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
-#'  \code{\link[purrr]{map}},\code{\link[purrr]{map_df}},\code{\link[purrr]{set_names}}
-#'  \code{\link[stringr]{str_match_all}},\code{\link[stringr]{str_subset}}
-#'  \code{\link[tidyr]{unnest}},\code{\link[tidyr]{gather}},\code{\link[tidyr]{separate}}
+#'  \code{\link[fs]{dir_ls}},\code{\link[fs]{path_ext_remove}},\code{\link[fs]{path_file}}
+#'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}},\code{\link[dplyr]{select_if}},\code{\link[dplyr]{matches}}
+#'  \code{\link[tidyr]{separate}},\code{\link[tidyr]{unnest}},\code{\link[tidyr]{gather}}
+#'  \code{\link[purrr]{map}}
+#'  \code{\link[readr]{read_table2}}
 #' @rdname load_rat_eeg
 #' @export
 #' @importFrom tibble tibble
-#' @importFrom dplyr mutate select
-#' @importFrom purrr map map_df set_names map_lgl
-#' @importFrom stringr str_match_all str_subset
-#' @importFrom tidyr unnest gather separate
+#' @importFrom fs dir_ls path_ext_remove path_file
+#' @importFrom dplyr mutate select select_if matches
+#' @importFrom tidyr separate unnest gather
+#' @importFrom purrr map
 #' @importFrom readr read_table2
-#' @importFrom magrittr "%>%"
-load_rat_eeg <- function(.path = NULL,
-                     .pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)",
-                     col_names = c("study_name", "id", "session"),
-                     drop_cols = TRUE) {
+load_rat_eeg <- function(
+  path = NULL,
+  col_names = c("study", "id", "condition"),
+  drop_cols = TRUE,
+  file_ext = ".txt",
+  ...
+){
+  ## collect the path for all files and create new colum with only filename
+  df_init <- tibble::tibble(fpath = fs::dir_ls(path, regexp = file_ext)) %>%
+    dplyr::mutate(fnames = fs::path_ext_remove(fs::path_file(fpath)))
 
-
-  df <- tibble::tibble(fpath = list.files(
-    .path,
-    pattern = "*.txt",
-    all.files = TRUE,
-    full.names = TRUE
-  )) %>%
-    dplyr::mutate(
-      ## extract info (e.g. study name, id, session) from the filename
-      cnames = purrr::map(fpath, ~ purrr::map_df(., ~ stringr::str_match_all(., .pattern)[[1]] %>%
-                                                   as.list(.) %>%
-                                                   ## first element of the list
-                                                   ## is the full filename, so
-                                                   ## we skip it
-                                                   .[2:length(.)] %>%
-                                                   set_names(col_names))),
-      ## read the files
-      imp_data = purrr::map(fpath,
-                            ~ purrr::map_df(., ~ readr::read_table2(.)))) %>%
-    tidyr::unnest(cnames) %>%
-    tidyr::unnest(imp_data) %>%
+  df <- df_init %>%
+    tidyr::separate(col = "fnames", into = col_names, ...) %>%
+    dplyr::mutate(data_imp = purrr::map(fpath, ~ readr::read_table2(.))) %>%
+    tidyr::unnest(data_imp) %>%
     dplyr::select(-fpath) %>%
     dplyr::select_if(., ~ !(all(is.na(.)))) %>%
-    tidyr::gather(type, transition, matches("T[12]")) %>%
+    tidyr::gather(type, transition, dplyr::matches("T[12]")) %>%
     tidyr::separate(type, into = c("rec", "electrode"), sep = 2)
 
   ## Depending on whether we want to drop the columns with rec and electrode
@@ -67,4 +65,9 @@ load_rat_eeg <- function(.path = NULL,
   } else {
     df
   }
+
+  # if(length(str_extract(df_init$fnames, "[^[:alnum:]]+") %>% unique(.)) > 1){
+  #   df
+  #   warning("Some files have more than one separator.")
+  # }
 }
