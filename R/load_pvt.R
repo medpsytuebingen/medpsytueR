@@ -1,8 +1,9 @@
 #' @title Load PVT reaction time task
 #' @description Load all .dat files from the Psychomotor Vigilance Task (ePrime) in the same directory.
-#' @param .path Path to files, Default: NULL
-#' @param .pattern Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)'
+#' @param path Path to files, Default: NULL
 #' @param col_names Names for the columns. Default: c("study_name", "id", "session")
+#' @param file_ext The file extension of your files. Default: ".dat"
+#' @param ... extra parameters to pass to tidyr::separate
 #' @return A dataframe
 #' @details DETAILS
 #' @examples
@@ -15,36 +16,30 @@
 #'  \code{\link[tibble]{tibble}}
 #'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map_df}},\code{\link[purrr]{set_names}}
-#'  \code{\link[stringr]{str_match_all}},\code{\link[stringr]{str_subset}}
+#'  \code{\link[stringr]{str_subset}}
 #'  \code{\link[tidyr]{unnest}}
+#'  \code{\link[fs]{dir_ls}}\code{\link[fs]{path_ext_remove}}
 #' @rdname load_pvt
 #' @export
 #' @importFrom tibble tibble
 #' @importFrom dplyr mutate select
 #' @importFrom purrr map map_df set_names
-#' @importFrom stringr str_match_all str_subset
+#' @importFrom stringr str_subset
 #' @importFrom tidyr unnest
 #' @importFrom magrittr "%>%"
-load_pvt <- function(.path = NULL,
-                             .pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)",
-                             col_names = c("study_name", "id", "session")) {
+#' @importFrom fs dir_ls path_ext_remove
+load_pvt <- function(path = NULL,
+                     col_names = c("study_name", "id", "session"),
+                     file_ext = ".dat",
+                     ...) {
 
-
-  df <- tibble::tibble(fpath = list.files(
-    .path,
-    pattern = "*.dat",
-    all.files = TRUE,
-    full.names = TRUE
-  )) %>%
-    dplyr::mutate(
-      ## extract study name, id and session from the filename
-      cnames = purrr::map(fpath, ~ purrr::map_df(., ~ stringr::str_match_all(., .pattern)[[1]] %>%
-                                                   as.list(.) %>%
-                                                   .[2:length(.)] %>%
-                                                   set_names(col_names))),
-      ## read the relevant lines (starting with "WAITING") from each file and give
-      ## the columns the proper names
-      imp_data = purrr::map(fpath, ~ purrr::map_df(., ~ readLines(.) %>%
+  ## read all lines from the files, keep only the ones starting with "WAITING",
+  ## import each column into a list and keep only what is needed (the reaction
+  ## times). Finally name each resulting list and save everything into one df
+  df <- add_path_fname(path,
+                       col_names,
+                       file_ext, ...) %>%
+    dplyr::mutate(imp_data = purrr::map(fpath, ~ purrr::map_df(., ~ readLines(.) %>%
                                                      stringr::str_subset(., "WAITING") %>%
                                                      purrr::map_df(., ~ scan(
                                                        text = ., quiet = TRUE,
@@ -55,7 +50,8 @@ load_pvt <- function(.path = NULL,
                                                      )[c(2,5)] %>%
                                                        purrr::set_names(c("waiting", "reaction")))))
     ) %>%
-    tidyr::unnest(cnames) %>%
     tidyr::unnest(imp_data) %>%
     dplyr::select(-fpath)
+
+  df
 }

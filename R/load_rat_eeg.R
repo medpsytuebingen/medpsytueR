@@ -7,8 +7,8 @@
 #' for each electrode and animal recorded. Since usually the information is the
 #' same across all electrodes Default: TRUE
 #' @param file_ext The extension of the files you want to import, Default: '.txt'
-#' @param ... PARAM_DESCRIPTION
-#' @return A data-frame
+#' @param ... extra parameters to pass to tidyr::separate
+#' @return A data-frame.
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -38,13 +38,14 @@ load_rat_eeg <- function(
   ...
 ){
   ## collect the path for all files and create new colum with only filename
-  df_init <- tibble::tibble(fpath = fs::dir_ls(path, regexp = file_ext)) %>%
-    dplyr::mutate(fnames = fs::path_ext_remove(fs::path_file(fpath)))
+  df_init <- add_path_fname(path,
+                            col_names,
+                            file_ext, ...) %>%
 
   df <- df_init %>%
     tidyr::separate(col = "fnames", into = col_names, ...) %>%
-    dplyr::mutate(data_imp = purrr::map(fpath, ~ readr::read_table2(.))) %>%
-    tidyr::unnest(data_imp) %>%
+    dplyr::mutate(imp_data = purrr::map(fpath, ~ readr::read_table2(.))) %>%
+    tidyr::unnest(imp_data) %>%
     dplyr::select(-fpath) %>%
     dplyr::select_if(., ~ !(all(is.na(.)))) %>%
     tidyr::gather(type, transition, dplyr::matches("T[12]")) %>%

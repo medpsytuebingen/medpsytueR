@@ -1,9 +1,10 @@
 #' @title Load calorimetry files
 #' @description This function will load all calorimeter files in the same directory,
 #'  into R as a dataframe.
-#' @param .path Path to files, Default: NULL
-#' @param .pattern Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)'
+#' @param path Path to files, Default: NULL
 #' @param col_names Names for the columns. Default: c("study_name", "id", "session")
+#' @param file_ext The file extension of your files. Default: ".dat"
+#' @param ... extra parameters to pass to tidyr::separate
 #' @return A dataframe.
 #' @examples
 #' \dontrun{
@@ -25,27 +26,17 @@
 #' @importFrom purrr map map_df set_names
 #' @importFrom tidyr unnest
 #' @importFrom magrittr "%>%"
+load_calorimetry <- function(path = NULL,
+                             col_names = c("study_name", "id", "session"),
+                             file_ext = ".txt",
+                             ...) {
 
-load_calorimetry <- function(.path = NULL,
-                             .pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)",
-                             col_names = c("study_name", "id", "session")) {
-
-
-df <- tibble::tibble(fpath = list.files(
-  .path,
-  pattern = "*.txt",
-  all.files = TRUE,
-  full.names = TRUE
-)) %>%
-  dplyr::mutate(
-    ## extract study name, id and session from the filename
-    cnames = purrr::map(fpath, ~ purrr::map_df(., ~ stringr::str_match_all(., .pattern)[[1]] %>%
-      as.list(.) %>%
-      .[2:length(.)] %>%
-      set_names(col_names))),
+  df <- add_path_fname(path,
+                       col_names,
+                       file_ext, ...) %>%
     ## read the relevant lines (starting with "00:") from each file and give
     ## the columns the proper names
-    imp_data = purrr::map(fpath, ~ purrr::map_df(., ~ readLines(.) %>%
+    mutate(imp_data = purrr::map(fpath, ~ purrr::map_df(., ~ readLines(.) %>%
       stringr::str_subset(., "00:") %>%
       purrr::map_df(., ~ scan(
         text = ., quiet = TRUE,
@@ -61,8 +52,10 @@ df <- tibble::tibble(fpath = list.files(
           "FICO2", "FECO2"
         )))))
   ) %>%
-  tidyr::unnest(cnames) %>%
   tidyr::unnest(imp_data) %>%
   dplyr::select(-fpath)
 
+  df
 }
+
+

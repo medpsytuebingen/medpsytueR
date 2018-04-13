@@ -4,16 +4,17 @@
 \alias{load_calorimetry}
 \title{Load calorimetry files}
 \usage{
-load_calorimetry(.path = NULL,
-  .pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)",
-  col_names = c("study_name", "id", "session"))
+load_calorimetry(path = NULL, col_names = c("study_name", "id", "session"),
+  file_ext = ".txt", ...)
 }
 \arguments{
-\item{.path}{Path to files, Default: NULL}
-
-\item{.pattern}{Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)'}
+\item{path}{Path to files, Default: NULL}
 
 \item{col_names}{Names for the columns. Default: c("study_name", "id", "session")}
+
+\item{file_ext}{The file extension of your files. Default: ".dat"}
+
+\item{...}{extra parameters to pass to tidyr::separate}
 }
 \value{
 A dataframe.
