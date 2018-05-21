@@ -1,6 +1,7 @@
-[![Travis build status](https://img.shields.io/travis/medpsytuebingen/medpsytueR.svg?style=flat-square)](https://travis-ci.org/medpsytuebingen/medpsytueR)
-[![AppVeyor build status](https://img.shields.io/appveyor/ci/jcpsantiago/medpsytueR.svg?style=flat-square)](https://ci.appveyor.com/project/jcpsantiago/medpsytuer-4aalo)
-![License](https://img.shields.io/badge/license-MIT-blue.svg?longCache=true&style=flat-square)
+[![Travis build status](https://img.shields.io/travis/medpsytuebingen/medpsytueR.svg?style)](https://travis-ci.org/medpsytuebingen/medpsytueR)
+[![AppVeyor build status](https://img.shields.io/appveyor/ci/jcpsantiago/medpsytueR.svg?style)](https://ci.appveyor.com/project/jcpsantiago/medpsytuer-4aalo)
+[![Coverage status](https://codecov.io/gh/medpsytuebingen/medpsytueR/branch/master/graph/badge.svg)](https://codecov.io/github/medpsytuebingen/medpsytueR?branch=master)
+![License](https://img.shields.io/badge/license-MIT-blue.svg?longCache=true&style)
 
 # medpsytueR
 
@@ -32,7 +33,7 @@ df_nomiss <- clean_cases(df, id, value)
 follow the same naming convention. For example for files named "study-id-session", e.g. insuso-03-N3:
 
 ``` r
-df <- load_calorimetry(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:digit:]]+)-([[:alnum:]]+)")
+df <- load_calorimetry(path = "myproject/data", col_names = c("study", "id", "condition"))
 ```
 
 
@@ -47,12 +48,12 @@ load_excel(path = "myproject/data/allmydata.xlsx", skip_sheets = c("README", "in
 `load_pvt`: will import all .dat files with data from an ePrime Psychomotor Vigilance Task into a single dataframe, so long they all follow the same naming convention. For example for files named "study-id-session", e.g. insuso-03-N3:
 
 ``` r
-df <- load_pvt(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)")
+df <- load_pvt(path = "myproject/data", col_names = c("study", "id", "condition"))
 ```
 
 
 `load_rat_eeg`: will import all .txt files with data from sleep scoring with Spike2.
 
 ``` r
-df <- load_rat_eeg(path = "myproject/data", pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)")
+df <- load_rat_eeg(path = "myproject/data", col_names = c("study", "id", "condition"))
 ```

@@ -4,16 +4,17 @@
 \alias{load_pvt}
 \title{Load PVT reaction time task}
 \usage{
-load_pvt(.path = NULL,
-  .pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)",
-  col_names = c("study_name", "id", "session"))
+load_pvt(path = NULL, col_names = c("study_name", "id", "session"),
+  file_ext = ".dat", ...)
 }
 \arguments{
-\item{.path}{Path to files, Default: NULL}
-
-\item{.pattern}{Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)'}
+\item{path}{Path to files, Default: NULL}
 
 \item{col_names}{Names for the columns. Default: c("study_name", "id", "session")}
+
+\item{file_ext}{The file extension of your files. Default: ".dat"}
+
+\item{...}{extra parameters to pass to tidyr::separate}
 }
 \value{
 A dataframe
@@ -35,6 +36,7 @@ if(interactive()){
 \code{\link[tibble]{tibble}}
  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
  \code{\link[purrr]{map}},\code{\link[purrr]{map_df}},\code{\link[purrr]{set_names}}
- \code{\link[stringr]{str_match_all}},\code{\link[stringr]{str_subset}}
+ \code{\link[stringr]{str_subset}}
  \code{\link[tidyr]{unnest}}
+ \code{\link[fs]{dir_ls}}\code{\link[fs]{path_ext_remove}}
 }

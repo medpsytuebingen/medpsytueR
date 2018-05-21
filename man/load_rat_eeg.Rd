@@ -4,25 +4,28 @@
 \alias{load_rat_eeg}
 \title{Load sleep rat sleep scoring (Spike2)}
 \usage{
-load_rat_eeg(.path = NULL,
-  .pattern = "([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)",
-  col_names = c("study_name", "id", "session"))
+load_rat_eeg(path = NULL, col_names = c("study", "id", "condition"),
+  drop_cols = TRUE, file_ext = ".txt", ...)
 }
 \arguments{
-\item{.path}{Path to files, Default: NULL}
+\item{path}{Path to files as a string, Default: NULL}
 
-\item{.pattern}{Regex pattern for the filenames. Default (e.g. InsuSO-01-N2): '([[:alnum:]]+)-([[:alnum:]]+)-([[:alnum:]]+)'}
+\item{col_names}{Names for the columns corresponding to the information on the
+filename, Default: c("study", "id", "condition")}
 
-\item{col_names}{Names for the columns. Default: c("study_name", "id", "session")}
+\item{drop_cols}{The Spike2 script will produce files with columns (e.g. T1EEG_PR)
+for each electrode and animal recorded. Since usually the information is the
+same across all electrodes Default: TRUE}
+
+\item{file_ext}{The extension of the files you want to import, Default: '.txt'}
+
+\item{...}{extra parameters to pass to tidyr::separate}
 }
 \value{
-A dataframe
+A data-frame.
 }
 \description{
 Load all .txt files with sleep scoring done with Spike2.
-}
-\details{
-DETAILS
 }
 \examples{
 \dontrun{
@@ -33,8 +36,9 @@ if(interactive()){
 }
 \seealso{
 \code{\link[tibble]{tibble}}
- \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
- \code{\link[purrr]{map}},\code{\link[purrr]{map_df}},\code{\link[purrr]{set_names}}
- \code{\link[stringr]{str_match_all}},\code{\link[stringr]{str_subset}}
- \code{\link[tidyr]{unnest}}
+ \code{\link[fs]{dir_ls}},\code{\link[fs]{path_ext_remove}},\code{\link[fs]{path_file}}
+ \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}},\code{\link[dplyr]{select_if}},\code{\link[dplyr]{matches}}
+ \code{\link[tidyr]{separate}},\code{\link[tidyr]{unnest}},\code{\link[tidyr]{gather}}
+ \code{\link[purrr]{map}}
+ \code{\link[readr]{read_table2}}
 }
