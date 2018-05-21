@@ -40,10 +40,10 @@ load_rat_eeg <- function(
   ## collect the path for all files and create new colum with only filename
   df_init <- add_path_fname(path,
                             col_names,
-                            file_ext, ...) %>%
+                            file_ext, ...)
 
   df <- df_init %>%
-    tidyr::separate(col = "fnames", into = col_names, ...) %>%
+    # tidyr::separate(col = "fnames", into = col_names, ...) %>%
     dplyr::mutate(imp_data = purrr::map(fpath, ~ readr::read_table2(.))) %>%
     tidyr::unnest(imp_data) %>%
     dplyr::select(-fpath) %>%
