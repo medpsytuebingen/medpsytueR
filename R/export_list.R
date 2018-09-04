@@ -3,12 +3,12 @@
 #' @param list a list of data frames.
 #' @param folder the path to destination.
 #' @param format the format in which to save the data. Currently only "rds"
-#'     (Default) and "csv" are available.
+#'     and "csv" (Default)are available.
 #'
 #' @return RDS or CSV files for each data frame in the list.
 #' @export
 #'
-export_list <- function(list, folder = NULL, format = "rds") {
+export_list <- function(list, folder = NULL, format = "csv") {
   if (!(is.list(list))) {
     stop(paste(list, " is not a list, and I cannot export it"))
   }
@@ -17,8 +17,8 @@ export_list <- function(list, folder = NULL, format = "rds") {
     stop("Please provide a path to where you want to export the list")
   }
 
-  if (!(format %in% c("rds", "cvs"))) {
-    stop(paste(format, "is not a valid format, or not yet implemented"))
+  if (!(format %in% c("rds", "csv"))) {
+    stop(paste(format, "is not a valid format, or not yet implemented."))
   }
 
   switch(

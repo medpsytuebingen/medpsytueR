@@ -4,7 +4,7 @@
 \alias{export_list}
 \title{Export a list of data frames}
 \usage{
-export_list(list, folder = NULL, format = "rds")
+export_list(list, folder = NULL, format = "csv")
 }
 \arguments{
 \item{list}{a list of data frames.}
@@ -12,7 +12,7 @@ export_list(list, folder = NULL, format = "rds")
 \item{folder}{the path to destination.}
 
 \item{format}{the format in which to save the data. Currently only "rds"
-(Default) and "csv" are available.}
+and "csv" (Default)are available.}
 }
 \value{
 RDS or CSV files for each data frame in the list.
