@@ -2,6 +2,7 @@
 
 export(add_path_fname)
 export(clean_cases)
+export(export_list)
 export(load_calorimetry)
 export(load_excel)
 export(load_pvt)

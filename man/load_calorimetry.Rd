@@ -4,8 +4,8 @@
 \alias{load_calorimetry}
 \title{Load calorimetry files}
 \usage{
-load_calorimetry(path = NULL, col_names = c("study_name", "id", "session"),
-  file_ext = ".txt", ...)
+load_calorimetry(path = NULL, col_names = c("study_name", "id",
+  "session"), file_ext = ".txt", ...)
 }
 \arguments{
 \item{path}{Path to files, Default: NULL}

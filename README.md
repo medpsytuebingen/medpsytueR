@@ -57,3 +57,16 @@ df <- load_pvt(path = "myproject/data", col_names = c("study", "id", "condition"
 ``` r
 df <- load_rat_eeg(path = "myproject/data", col_names = c("study", "id", "condition"))
 ```
+
+`export_list`: this function is useful for exporting multiple data frames, for
+example after an initial data cleaning step.
+
+``` r
+## gather your data frames into a list
+l <- mget(c("rat_eeg_clean",
+            "digit_span",
+            "pvt_clean"))
+
+## export into individual CSV files
+export_list(list = l, folder = "clean_data/", format = "csv")
+```
