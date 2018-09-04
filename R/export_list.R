@@ -3,7 +3,7 @@
 #' @param list a list of data frames.
 #' @param folder the path to destination.
 #' @param format the format in which to save the data. Currently only "rds"
-#'     (Default) and "csv" are available.
+#'     and "csv" (Default)are available.
 #'
 #' @return RDS or CSV files for each data frame in the list.
 #' @export
