@@ -23,13 +23,16 @@ export_list <- function(list, folder = NULL, format = "rds") {
 
   switch(
     format,
-    rds = purrr::imap(
+    rds = purrr::iwalk(
       list,
       ~ readr::write_rds(.x, path = paste0(folder, .y, ".rds"))
     ),
-    csv = purrr::imap(
+    csv = purrr::iwalk(
       list,
       ~ readr::write_csv(.x, path = paste0(folder, .y, ".csv"))
     )
   )
+
+  # success!!!
+  print(paste(length(list), "tables exported!"))
 }
