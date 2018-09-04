@@ -5,3 +5,4 @@ LICENSE\.md$
 .here$
 ^appveyor\.yml$
 ^codecov\.yml$
+^\.httr-oauth$
