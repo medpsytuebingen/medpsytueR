@@ -27,6 +27,7 @@ in a specified column.
 ``` r
 df_nomiss <- clean_cases(df, id, value)
 ```
+<br>
 
 
 `load_calorimetry`: will import all files from the calorimeter, so long they all
@@ -35,6 +36,7 @@ follow the same naming convention. For example for files named "study-id-session
 ``` r
 df <- load_calorimetry(path = "myproject/data", col_names = c("study", "id", "condition"))
 ```
+<br>
 
 
 `load_excel`: will import all sheets from an excel file into separate dataframes. You can specify sheets to skip with the `skip_sheets` argument. This function only works properly if all sheets are _perfectly tabular_, without any special formatting. Make sure the
@@ -43,6 +45,7 @@ spreadsheet is clean before attempting to import.
 ``` r
 load_excel(path = "myproject/data/allmydata.xlsx", skip_sheets = c("README", "intermediate_calc"))
 ```
+<br>
 
 
 `load_pvt`: will import all .dat files with data from an ePrime Psychomotor Vigilance Task into a single dataframe, so long they all follow the same naming convention. For example for files named "study-id-session", e.g. insuso-03-N3:
@@ -50,6 +53,7 @@ load_excel(path = "myproject/data/allmydata.xlsx", skip_sheets = c("README", "in
 ``` r
 df <- load_pvt(path = "myproject/data", col_names = c("study", "id", "condition"))
 ```
+<br>
 
 
 `load_rat_eeg`: will import all .txt files with data from sleep scoring with Spike2.
@@ -57,6 +61,7 @@ df <- load_pvt(path = "myproject/data", col_names = c("study", "id", "condition"
 ``` r
 df <- load_rat_eeg(path = "myproject/data", col_names = c("study", "id", "condition"))
 ```
+<br>
 
 `export_list`: this function is useful for exporting multiple data frames, for
 example after an initial data cleaning step.
